@@ -47,32 +47,20 @@ VertexType getHeightMap(const glm::vec2 position) {
 
 MyApplication::MyApplication()
     : Application(),
-      vertexShader(SHADER_DIR "/shader.vert", GL_VERTEX_SHADER),
-      fragmentShader(SHADER_DIR "/shader.frag", GL_FRAGMENT_SHADER),
+      vertexShader(SHADER_DIR "shader.vert", GL_VERTEX_SHADER),
+      fragmentShader(SHADER_DIR "shader.frag", GL_FRAGMENT_SHADER),
       shaderProgram({vertexShader, fragmentShader}) {
   glCheckError(__FILE__, __LINE__);
 
   // creation of the mesh ------------------------------------------------------
   std::vector<VertexType> vertices;
-  std::vector<GLuint> index;
+  std::vector<GLuint> index({0,1,2});
 
-  for (int y = 0; y <= size; ++y)
-    for (int x = 0; x <= size; ++x) {
-      float xx = (x - size / 2) * 0.1f;
-      float yy = (y - size / 2) * 0.1f;
-      vertices.push_back(getHeightMap({xx, yy}));
-    }
-
-  for (int y = 0; y < size; ++y)
-    for (int x = 0; x < size; ++x) {
-      index.push_back((x + 0) + (size + 1) * (y + 0));
-      index.push_back((x + 1) + (size + 1) * (y + 0));
-      index.push_back((x + 1) + (size + 1) * (y + 1));
-
-      index.push_back((x + 1) + (size + 1) * (y + 1));
-      index.push_back((x + 0) + (size + 1) * (y + 1));
-      index.push_back((x + 0) + (size + 1) * (y + 0));
-    }
+  float xx[] = {-8.5,  8.5, 8.0};
+  float yy[] = {-8.5, -8.5, 8.5};
+  for (int i = 0; i < 3; ++i) {
+    vertices.push_back(getHeightMap({xx[i], yy[i]}));
+  }
 
   std::cout << "vertices=" << vertices.size() << std::endl;
   std::cout << "index=" << index.size() << std::endl;
